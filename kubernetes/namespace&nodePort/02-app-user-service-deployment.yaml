@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-user-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service-user-b
+  template:
+    metadata:
+      labels:
+        app: service-user-b
+    spec:
+      containers:
+      - name: app
+        image: img/urp-service-user-200423
+        readinessProbe:
+         httpGet:
+          path: /actuator/health
+          port: 8080
+         initialDelaySeconds: 5
+         periodSeconds: 10
+        livenessProbe:
+         tcpSocket:
+          port: 8080
+         initialDelaySeconds: 15
+         periodSeconds: 20
+        resources:
+          limits:
+            cpu: 0.5
+            memory: 500Mi
+          requests:
+            cpu: 0.30
+            memory: 350Mi
+        ports:
+        - name: http
+          protocol: TCP
+          containerPort: 8080
+        imagePullPolicy: Never

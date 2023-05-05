@@ -1,0 +1,2 @@
+ 
+kubectl port-forward kafka-broker-8686cf9b4c-4sj2h 9092 -n kafka

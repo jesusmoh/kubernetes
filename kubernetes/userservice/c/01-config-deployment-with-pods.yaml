@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-config
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service-config
+  template:
+    metadata:
+      labels:
+        app: service-config
+    spec:
+      containers:
+      - name: app
+        image: img/ms-core-config-server-0-0-2
+        env:
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+             fieldPath: status.hostIP
+        livenessProbe:
+         tcpSocket:
+          port: 8888
+         initialDelaySeconds: 15
+         periodSeconds: 20
+        resources:
+          limits:
+            cpu: 0.3
+            memory: 400Mi
+          requests:
+            cpu: 0.2
+            memory: 350Mi
+        ports:
+        - name: http
+          protocol: TCP
+          containerPort: 8888
+        imagePullPolicy: Never

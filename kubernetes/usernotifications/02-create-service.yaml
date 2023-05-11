@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: service-notifications
+  labels:
+    app: service-notifications
+spec:
+  selector:
+    app: service-notifications
+  ports:
+  - name: http
+    port: 8051
+    targetPort: 8051
+  type: LoadBalancer
+
+

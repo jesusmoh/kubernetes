@@ -1,39 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: service-config
+  name: notifications
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: service-config
+      app: notifications
   template:
     metadata:
       labels:
-        app: service-config
+        app: notifications
     spec:
       containers:
       - name: app
-        image: img/ms-core-user-0-0-4
+        image: img/ms-core-notifications-1-0-1
         env:
         - name: DD_AGENT_HOST
           valueFrom:
             fieldRef:
              fieldPath: status.hostIP
+        readinessProbe:
+         httpGet:
+          path: /actuator/health
+          port: 8051
+         initialDelaySeconds: 5
+         periodSeconds: 10
         livenessProbe:
          tcpSocket:
-          port: 8888
+          port: 8051
          initialDelaySeconds: 15
          periodSeconds: 20
         resources:
           limits:
-            cpu: 0.3
-            memory: 400Mi
+            cpu: 0.5
+            memory: 500Mi
           requests:
-            cpu: 0.2
+            cpu: 0.30
             memory: 350Mi
         ports:
         - name: http
           protocol: TCP
-          containerPort: 8080
+          containerPort: 8051
         imagePullPolicy: Never

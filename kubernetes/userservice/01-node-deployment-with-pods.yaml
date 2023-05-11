@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: img/ms-core-user-0-0-6
+        image: img/ms-core-user-1-0-0
         env:
         - name: DD_AGENT_HOST
           valueFrom:
